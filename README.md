@@ -1,32 +1,43 @@
-# React + TypeScript + Vite
+# Kumaravel K. - Interactive Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Welcome to my personal developer portfolio, showcasing my skills, experience, and creative projects.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Dynamic Interactive Orb Background:** Built using OGL WebGL shader rendering for high-performance fluid background visuals.
+- **Micro-Animations & Text Effects:** Featuring a custom character-by-character `<RotatingText />` component from React Bits.
+- **Tech Ecosystem Orbit:** An interactive, gravity-based orbiting circle displaying my core tools and languages.
+- **Professional Timeline:** Detailing my B.Tech Information Technology education and internship roles.
+- **Responsive Layout:** Designed for a premium experience on desktop, tablet, and mobile devices.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, Framer Motion
+- **WebGL Rendering:** OGL (WebGL)
+- **Utilities:** Lucide Icons, React Icons, GSAP, Lenis Smooth Scroll
 
-## Expanding the Oxlint configuration
+## 📦 Getting Started
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+### Prerequisites
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+- Node.js (v18 or higher)
+- npm or yarn
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/kumaravel198/Portfolio_kumaravel.git
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+4. Build for production:
+   ```bash
+   npm run build
+   ```
