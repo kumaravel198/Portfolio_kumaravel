@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-bg: #f8fafc;
+  --color-secondary-bg: #f1f5f9;
+  --color-cards: rgba(255, 255, 255, 0.45);
+  --color-glass: rgba(15, 23, 42, 0.08);
+  --color-primary-accent: #4f46e5;
+  --color-secondary-accent: #06b6d4;
+  --color-highlight: #ff0055;
+  --color-success: #10b981;
+  --color-typography: #0f172a;
+  --color-secondary-text: #475569;
+  --color-soft-divider: rgba(15, 23, 42, 0.08);
+
+  --font-heading: "Space Grotesk", "Satoshi", "General Sans", sans-serif;
+  --font-body: "Inter", "Plus Jakarta Sans", sans-serif;
+}
+
+[data-theme='dark'] {
+  --color-primary-bg: #050b14;
+  --color-secondary-bg: #0a1122;
+  --color-cards: rgba(10, 18, 36, 0.55);
+  --color-glass: rgba(255, 255, 255, 0.08);
+  --color-primary-accent: #ff0055;
+  --color-secondary-accent: #ff5e36;
+  --color-highlight: #ff8a00;
+  --color-success: #10b981;
+  --color-typography: #ffffff;
+  --color-secondary-text: #94a3b8;
+  --color-soft-divider: rgba(255, 255, 255, 0.1);
+}
+
+/* Smooth transitions for theme switching */
+html, body, section, header, footer, div, h1, h2, h3, h4, h5, h6, p, span, button, a, svg {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--color-primary-bg)] text-[var(--color-typography)] font-body antialiased;
+    margin: 0;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold tracking-tight;
+  }
+}
+
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-primary-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-cards);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary-accent);
+}
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------
+   Glassmorphism & Background Theme Enhancements
+   ---------------------------------------------------- */
+
+/* Force high-quality backdrop blur on all elements using card colors */
+[class*="bg-[var(--color-cards)]"],
+[class*="from-[var(--color-cards)]"],
+[class*="bg-cards"] {
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* Smooth float keyframe animations for gradient shapes in background */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(3deg);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(20px) rotate(-3deg);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 15s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 18s ease-in-out infinite;
+}
