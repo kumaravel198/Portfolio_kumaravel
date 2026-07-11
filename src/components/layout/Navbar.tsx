@@ -27,36 +27,54 @@ export default function Navbar() {
     document.documentElement.setAttribute('data-theme', initialTheme);
   }, []);
 
-  // Toggle theme
+  // Toggle theme with temporary transition class to avoid hover lag
   const toggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme-transitioning', 'true');
     setTheme(nextTheme);
     document.documentElement.setAttribute('data-theme', nextTheme);
     localStorage.setItem('theme', nextTheme);
+    setTimeout(() => {
+      document.documentElement.removeAttribute('data-theme-transitioning');
+    }, 450);
   };
 
-  // Handle scroll to highlight active tab and add scroll shadow
+  // Handle scroll to highlight active tab and add scroll shadow (optimized with requestAnimationFrame)
   useEffect(() => {
-    const handleScroll = () => {
-      // Set scrolled background state
-      setScrolled(window.scrollY > 50);
+    let isTicking = false;
 
-      // Determine active section
-      const scrollPosition = window.scrollY + 200; // offset for nav height
-      
-      for (const item of navItems) {
-        const el = document.querySelector(item.href);
-        if (el) {
-          const top = (el as HTMLElement).offsetTop;
-          const height = (el as HTMLElement).offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveTab(item.href);
+    // Cache elements once on mount
+    const cachedItems = navItems.map(item => ({
+      href: item.href,
+      el: document.querySelector(item.href) as HTMLElement | null
+    }));
+
+    const handleScroll = () => {
+      if (!isTicking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 50);
+
+          const scrollPosition = window.scrollY + 200; // offset for nav height
+          
+          for (const item of cachedItems) {
+            if (item.el) {
+              const top = item.el.offsetTop;
+              const height = item.el.offsetHeight;
+              if (scrollPosition >= top && scrollPosition < top + height) {
+                setActiveTab(item.href);
+              }
+            }
           }
-        }
+          isTicking = false;
+        });
+        isTicking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Run initial check
+    handleScroll();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -74,7 +92,7 @@ export default function Navbar() {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-[padding,background-color,border-color,box-shadow] duration-200 ease-out ${
         scrolled 
           ? 'py-4 bg-[var(--color-primary-bg)]/80 backdrop-blur-md border-b border-[var(--color-glass)] shadow-[0_4px_30px_rgba(0,0,0,0.15)]' 
           : 'py-6 bg-transparent'
@@ -90,8 +108,7 @@ export default function Navbar() {
           KUMARAVEL <span className="text-[var(--color-primary-accent)]">K</span>
         </a>
 
-        {/* Desktop Tabs */}
-        <nav className="hidden lg:flex items-center space-x-1 bg-neutral-900/40 p-1.5 rounded-full border border-[var(--color-glass)] backdrop-blur-sm">
+        <nav className="hidden lg:flex items-center space-x-1 bg-neutral-950/70 p-1.5 rounded-full border border-white/5 backdrop-blur-md">
           {navItems.map((item) => {
             const isActive = activeTab === item.href;
             return (
@@ -99,7 +116,7 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300 ${
+                className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-150 ease-out select-none cursor-pointer ${
                   isActive 
                     ? 'text-white font-semibold' 
                     : 'text-[var(--color-secondary-text)] hover:text-white'
@@ -108,8 +125,8 @@ export default function Navbar() {
                 {isActive && (
                   <motion.span
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary-accent)] to-[var(--color-highlight)] rounded-full z-0"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary-accent)] to-[var(--color-highlight)] rounded-full z-0 shadow-[0_0_20px_rgba(79,70,229,0.3)]"
+                    transition={{ type: 'spring', stiffness: 420, damping: 33 }}
                   />
                 )}
                 <span className="relative z-10">{item.label}</span>
@@ -123,7 +140,7 @@ export default function Navbar() {
           {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className="p-3 rounded-full bg-neutral-900/30 border border-[var(--color-glass)] text-[var(--color-typography)] hover:text-[var(--color-highlight)] hover:border-[var(--color-highlight)] hover:scale-105 transition-all duration-300 cursor-pointer shadow-lg flex items-center justify-center"
+            className="p-3 rounded-full bg-neutral-900/30 border border-[var(--color-glass)] text-[var(--color-typography)] hover:text-[var(--color-highlight)] hover:border-[var(--color-highlight)] hover:scale-105 transition-[color,border-color,background-color,transform] duration-150 ease-out cursor-pointer shadow-lg flex items-center justify-center"
             aria-label="Toggle Theme"
           >
             {theme === 'dark' ? <FiSun size={18} /> : <FiMoon size={18} />}
@@ -132,7 +149,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-3 rounded-full bg-neutral-900/30 border border-[var(--color-glass)] text-[var(--color-typography)] hover:text-[var(--color-highlight)] hover:border-[var(--color-highlight)] transition-all duration-300 cursor-pointer flex items-center justify-center"
+            className="lg:hidden p-3 rounded-full bg-neutral-900/30 border border-[var(--color-glass)] text-[var(--color-typography)] hover:text-[var(--color-highlight)] hover:border-[var(--color-highlight)] transition-[color,border-color,background-color] duration-150 ease-out cursor-pointer flex items-center justify-center"
             aria-label="Toggle Menu"
           >
             {mobileMenuOpen ? <FiX size={18} /> : <FiMenu size={18} />}

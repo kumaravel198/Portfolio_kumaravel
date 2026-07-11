@@ -1,24 +1,23 @@
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import Galaxy from './Galaxy';
 import { 
-  FaPython, FaReact, FaHtml5, FaCss3Alt, FaJs, 
-  FaDatabase, FaGithub, FaLaptopCode, FaChartBar,
-  FaFileExcel
-} from 'react-icons/fa';
-import { FiCpu } from 'react-icons/fi';
+  SiFigma, SiPython, SiVscodium, SiMysql, SiN8N, SiPandas, SiNumpy, SiJupyter 
+} from 'react-icons/si';
+import { FaReact, FaGithub } from 'react-icons/fa';
+import { FiGrid } from 'react-icons/fi';
 
 const orbitTools = [
-  { icon: FaPython, color: "#3776AB", name: "Python" },
+  { icon: SiFigma, color: "#F24E1E", name: "Figma" },
   { icon: FaReact, color: "#61DAFB", name: "React" },
-  { icon: FaHtml5, color: "#E34F26", name: "HTML5" },
-  { icon: FaCss3Alt, color: "#1572B6", name: "CSS3" },
-  { icon: FaJs, color: "#F7DF1E", name: "JavaScript" },
-  { icon: FaDatabase, color: "#4479A1", name: "SQL" },
   { icon: FaGithub, color: "#FFFFFF", name: "GitHub" },
-  { icon: FaLaptopCode, color: "#007ACC", name: "VS Code" },
-  { icon: FaChartBar, color: "#F2C811", name: "Power BI" },
-  { icon: FaFileExcel, color: "#217346", name: "Excel" },
-  { icon: FiCpu, color: "#FF6D5A", name: "n8n" }
+  { icon: SiPython, color: "#3776AB", name: "Python" },
+  { icon: SiVscodium, color: "#47A2F9", name: "VS Code" },
+  { icon: SiMysql, color: "#4479A1", name: "MySQL" },
+  { icon: SiN8N, color: "#FF6C37", name: "n8n" },
+  { icon: SiPandas, color: "#150458", name: "Pandas" },
+  { icon: SiNumpy, color: "#013243", name: "NumPy" },
+  { icon: SiJupyter, color: "#F37626", name: "Jupyter" }
 ];
 
 type AnimationState = 'idle' | 'suction' | 'waiting' | 'exploding' | 'sunBlast';
@@ -27,7 +26,7 @@ export default function ToolsOrbit() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   
-  const [isHoveringAny, setIsHoveringAny] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [animationState, setAnimationState] = useState<AnimationState>('idle');
 
   const handleBlackHoleClick = () => {
@@ -35,45 +34,67 @@ export default function ToolsOrbit() {
     
     setAnimationState('suction');
     
-    // Suction takes 1.5s, then wait 2s inside
     setTimeout(() => {
       setAnimationState('waiting');
       
       setTimeout(() => {
         setAnimationState('exploding');
         
-        // Explosion takes about 1s
         setTimeout(() => {
           setAnimationState('sunBlast');
           
-          // Sun blast lasts 2 seconds
           setTimeout(() => {
             setAnimationState('idle');
           }, 2000);
           
-        }, 1000); // 1s explosion
+        }, 1000);
         
-      }, 2000); // 2s wait
+      }, 2000);
       
-    }, 1500); // 1.5s suction
+    }, 1500);
   };
 
   return (
-    <section id="tools" className="py-24 px-6 relative z-10 overflow-hidden" ref={ref}>
-      <div className="max-w-7xl mx-auto mb-16 text-center">
+    <section id="tools" className="py-32 px-6 relative z-10 overflow-hidden" ref={ref}>
+      {/* Interactive Galaxy Background Animation with Smooth Vertical Blend Mask */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0 opacity-45"
+        style={{
+          maskImage: 'linear-gradient(to bottom, transparent, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 85%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 85%, transparent)',
+        }}
+      >
+        <Galaxy 
+          mouseRepulsion={false}
+          mouseInteraction={false}
+          density={3.5}
+          glowIntensity={0.6}
+          saturation={0.5}
+          hueShift={220} // Adjusted to a nice deep space blue/indigo
+          twinkleIntensity={0.3}
+          rotationSpeed={0.06}
+          repulsionStrength={8}
+          autoCenterRepulsion={0}
+          starSpeed={0.8}
+          speed={0.4}
+          transparent={true}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto mb-16 text-center relative z-10">
         <motion.span 
           initial={{ opacity: 0, y: 10 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="text-xs uppercase tracking-[0.25em] text-[var(--color-primary-accent)] font-semibold mb-3 block"
+          className="text-xs uppercase tracking-[0.25em] text-[var(--color-primary-accent)] font-semibold mb-3 block font-mono"
         >
-          My Toolbox
+          [ THE ECOSYSTEM ]
         </motion.span>
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl md:text-5xl font-bold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-400"
+          className="text-4xl md:text-5xl font-bold mb-4 tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-[var(--color-typography)] to-neutral-400"
         >
           Tech Ecosystem
         </motion.h2>
@@ -81,11 +102,11 @@ export default function ToolsOrbit() {
           initial={{ opacity: 0, scaleX: 0 }}
           animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="w-24 h-[1px] bg-[var(--color-primary-accent)] mx-auto"
+          className="w-20 h-[1px] bg-gradient-to-r from-[var(--color-primary-accent)] to-[var(--color-highlight)] mx-auto"
         />
       </div>
 
-      <div className="relative w-full max-w-[800px] aspect-square mx-auto flex justify-center items-center">
+      <div className="relative z-10 w-full max-w-[800px] aspect-square mx-auto flex justify-center items-center">
         
         {/* Explosion Flash Effect */}
         {animationState === 'exploding' && (
@@ -146,7 +167,7 @@ export default function ToolsOrbit() {
           className="group absolute z-20 w-32 h-32 md:w-48 md:h-48 rounded-full border flex items-center justify-center cursor-pointer hover:shadow-[0_0_60px_rgba(124,58,237,0.6)] hover:border-[var(--color-primary-accent)] transition-colors duration-500"
         >
           <div className="flex flex-col items-center justify-center space-y-2 text-center pointer-events-none select-none">
-            <FiCpu className="text-3xl md:text-4xl text-[var(--color-primary-accent)] group-hover:text-[var(--color-highlight)] group-hover:scale-110 transition-all duration-500 animate-pulse" />
+            <FiGrid className="text-3xl md:text-4xl text-[var(--color-primary-accent)] group-hover:text-[var(--color-highlight)] group-hover:scale-110 transition-all duration-500 animate-pulse" />
             <span className="text-xs md:text-sm font-mono tracking-[0.25em] text-neutral-300 group-hover:text-white transition-colors duration-300 uppercase">
               Tech Stack
             </span>
@@ -210,18 +231,18 @@ export default function ToolsOrbit() {
                   <motion.div
                     animate={{ rotate: -360 }}
                     transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                    className="w-12 h-12 md:w-16 md:h-16 -mt-6 md:-mt-8 rounded-full bg-[var(--color-cards)] border flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-125"
+                    className="w-12 h-12 md:w-16 md:h-16 -mt-6 md:-mt-8 rounded-full bg-neutral-900/40 dark:bg-neutral-950/60 border flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-125"
                     style={{
-                      boxShadow: isHoveringAny ? `0 0 35px ${tool.color}` : '0 0 15px rgba(0,0,0,0.5)',
-                      borderColor: isHoveringAny ? tool.color : 'var(--color-glass)'
+                      boxShadow: hoveredIndex === index ? `0 0 35px ${tool.color}` : '0 0 15px rgba(0,0,0,0.15)',
+                      borderColor: hoveredIndex === index ? tool.color : 'var(--color-glass)'
                     }}
-                    onMouseEnter={() => setIsHoveringAny(true)}
-                    onMouseLeave={() => setIsHoveringAny(false)}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
                   >
                     <tool.icon 
                       size={24} 
                       style={{ color: tool.color }} 
-                      className={isHoveringAny ? "drop-shadow-[0_0_15px_currentColor] transition-all duration-300" : "transition-all duration-300"} 
+                      className={hoveredIndex === index ? "drop-shadow-[0_0_15px_currentColor] transition-all duration-300" : "transition-all duration-300"} 
                     />
                   </motion.div>
                 </motion.div>

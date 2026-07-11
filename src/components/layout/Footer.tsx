@@ -8,41 +8,55 @@ export default function Footer() {
   return (
     <footer className="relative border-t border-[var(--color-glass)] bg-[var(--color-primary-bg)] pt-20 pb-10 px-6 md:px-12 z-10 overflow-hidden">
       
-      {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[500px] bg-[var(--color-primary-accent)] rounded-[100%] opacity-5 blur-[120px] pointer-events-none" />
+      {/* Background Soft Glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4/5 h-[250px] bg-[var(--color-primary-accent)]/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
         
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-typography)] to-[var(--color-secondary-text)]">
-          KUMARAVEL.
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-[var(--color-typography)] to-neutral-400 select-none">
+          KUMARAVEL K
         </h2>
 
-        <p className="text-xl md:text-2xl text-[var(--color-secondary-text)] font-light italic mb-12 max-w-2xl">
-          "Transforming Ideas Into Digital Experiences."
+        <p className="text-sm text-[var(--color-secondary-text)] tracking-wider font-light mb-8 max-w-xl select-none leading-relaxed">
+          Designing systems. Building interfaces. Crafting products.
         </p>
 
-        <div className="flex space-x-6 mb-16">
-          <a href="https://github.com/kumaravel198" target="_blank" rel="noreferrer" className="magnetic text-[var(--color-secondary-text)] hover:text-[var(--color-typography)] transition-colors p-4 rounded-full border border-[var(--color-glass)] hover:border-[var(--color-typography)]">
-            <FiGithub size={24} />
-          </a>
-          <a href="https://www.linkedin.com/in/kumaravel-k-3904192a8/" target="_blank" rel="noreferrer" className="magnetic text-[var(--color-secondary-text)] hover:text-[var(--color-typography)] transition-colors p-4 rounded-full border border-[var(--color-glass)] hover:border-[var(--color-typography)]">
-            <FiLinkedin size={24} />
-          </a>
-          <a href="mailto:kumaravel.kv198@gmail.com" className="magnetic text-[var(--color-secondary-text)] hover:text-[var(--color-typography)] transition-colors p-4 rounded-full border border-[var(--color-glass)] hover:border-[var(--color-typography)]">
-            <FiMail size={24} />
-          </a>
+        {/* Social Icons with border wrappers */}
+        <div className="flex space-x-3 mb-12">
+          {[
+            { icon: <FiGithub size={18} />, href: "https://github.com/kumaravel198", label: "GitHub" },
+            { icon: <FiLinkedin size={18} />, href: "https://www.linkedin.com/in/kumaravel-k-3904192a8/", label: "LinkedIn" },
+            { icon: <FiMail size={18} />, href: "mailto:kumaravel.kv198@gmail.com", label: "Email" }
+          ].map((social, i) => (
+            <a 
+              key={i} 
+              href={social.href} 
+              target="_blank" 
+              rel="noreferrer" 
+              title={social.label}
+              className="magnetic text-[var(--color-secondary-text)] hover:text-[var(--color-typography)] hover:bg-neutral-950/5 dark:hover:bg-white/5 transition-all duration-300 p-3 rounded-2xl border border-[var(--color-glass)] hover:border-neutral-400 dark:hover:border-neutral-700 shadow-sm flex items-center justify-center bg-neutral-900/5 dark:bg-neutral-950/20"
+            >
+              {social.icon}
+            </a>
+          ))}
         </div>
 
-        <div className="w-full border-t border-[var(--color-glass)] pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-[var(--color-secondary-text)]">
-          <p>© {new Date().getFullYear()} Kumaravel K. All rights reserved.</p>
+        {/* Sub Footer details */}
+        <div className="w-full border-t border-[var(--color-glass)] pt-8 flex flex-col md:flex-row justify-between items-center text-[11px] font-mono text-neutral-500 gap-4">
+          <div className="flex items-center gap-4">
+            <p>© {new Date().getFullYear()} Kumaravel K. All rights reserved.</p>
+            <span className="hidden sm:inline text-neutral-700">|</span>
+            <p className="hidden sm:inline text-[9px] bg-neutral-950/5 dark:bg-neutral-950/40 border border-[var(--color-glass)] px-2 py-0.5 rounded text-neutral-500 font-mono">SPEC SCALE 1:1</p>
+            <p className="hidden sm:inline text-[9px] bg-neutral-950/5 dark:bg-neutral-950/40 border border-[var(--color-glass)] px-2 py-0.5 rounded text-neutral-500 font-mono">BUILD V2.0</p>
+          </div>
           
           <button 
             onClick={scrollToTop}
-            className="magnetic mt-4 md:mt-0 flex items-center space-x-2 hover:text-[var(--color-typography)] transition-colors group"
+            className="magnetic flex items-center space-x-2 hover:text-[var(--color-typography)] transition-colors group cursor-pointer"
           >
-            <span>Back to top</span>
-            <span className="w-8 h-8 rounded-full border border-[var(--color-glass)] flex items-center justify-center group-hover:border-[var(--color-typography)] group-hover:-translate-y-1 transition-all">
-              <FiArrowUp />
+            <span className="font-semibold tracking-wider text-[10px] uppercase">Back to top</span>
+            <span className="w-8 h-8 rounded-xl border border-[var(--color-glass)] flex items-center justify-center bg-neutral-900/5 dark:bg-neutral-950/20 group-hover:border-[var(--color-primary-accent)]/30 group-hover:text-[var(--color-primary-accent)] group-hover:-translate-y-0.5 transition-all duration-300 shadow-sm">
+              <FiArrowUp size={12} />
             </span>
           </button>
         </div>

@@ -31,9 +31,14 @@
   --color-soft-divider: rgba(255, 255, 255, 0.1);
 }
 
-/* Smooth transitions for theme switching */
-html, body, section, header, footer, div, h1, h2, h3, h4, h5, h6, p, span, button, a, svg {
-  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+/* Scoped transitions for theme switching to avoid global selector performance issues */
+.theme-transition,
+[data-theme-transitioning] body,
+[data-theme-transitioning] header,
+[data-theme-transitioning] footer,
+[data-theme-transitioning] section,
+[data-theme-transitioning] nav {
+  transition: background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1), color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
@@ -117,4 +122,52 @@ html.lenis, html.lenis body {
 
 .animate-float-reverse {
   animation: float-reverse 18s ease-in-out infinite;
+}
+
+/* Premium UI/UX Design System Utility Styles */
+
+.glass-panel {
+  background: var(--color-cards);
+  backdrop-filter: blur(24px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(120%) !important;
+  border: 1px solid var(--color-glass);
+}
+
+.glass-panel-hover {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-panel-hover:hover {
+  border-color: var(--color-primary-accent);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3),
+              0 0 20px 0px rgba(var(--color-primary-accent), 0.05);
+}
+
+/* Premium Neumorphic visual style */
+.neumorphic-inset {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 
+              inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+}
+
+.glow-card {
+  position: relative;
+  overflow: hidden;
+}
+.glow-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255, 255, 255, 0.06), transparent 40%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.glow-card:hover::after {
+  opacity: 1;
+}
+
+/* 60 FPS GPU-accelerated Animations */
+.will-change-transform-opacity {
+  will-change: transform, opacity;
+  transform: translate3d(0,0,0);
 }
