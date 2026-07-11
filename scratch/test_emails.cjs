@@ -59,7 +59,8 @@ async function sendTestEmails() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json"
+          "Accept": "application/json",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         },
         body: JSON.stringify({
           access_key: accessKey,
@@ -71,7 +72,14 @@ async function sendTestEmails() {
         })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        console.error(`  ❌ JSON parse error. Status: ${response.status}. Response preview: ${responseText.slice(0, 200)}`);
+        continue;
+      }
 
       if (response.ok && data.success) {
         console.log(`  ✅ Success! Email routed to Web3Forms.`);
